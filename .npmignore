@@ -1,0 +1,11 @@
+artifacts/
+docs/provenance/
+outputs/
+work/
+node_modules/
+scripts/build-provenance-manifest.ps1
+scripts/import-historical-snapshots.ps1
+scripts/verify-provenance.ps1
+*.log
+.env
+.env.*

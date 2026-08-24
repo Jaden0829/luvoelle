@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="folded-l-title">
+  <title id="folded-l-title">Luvoelle Folded L</title>
+  <defs>
+    <linearGradient id="folded-l-bg" x1="54" y1="28" x2="458" y2="484" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#260430"/>
+      <stop offset=".56" stop-color="#33083E"/>
+      <stop offset="1" stop-color="#42104B"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="132" fill="url(#folded-l-bg)"/>
+  <path id="folded-l-mark" d="M198 106h40v204h170v34c0 36-28 64-64 64H132V172c0-36 29-66 66-66Z" fill="#FBF8F0"/>
+  <path id="folded-l-face" d="m132 408 106-98-24 98h-82Z" fill="#FF3B20"/>
+</svg>

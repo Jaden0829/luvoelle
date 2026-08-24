@@ -1,0 +1,66 @@
+name: Build macOS Apple Silicon
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Optional existing GitHub release tag to receive the DMG and ZIP
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-26
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Apple Silicon dependencies
+        run: npm ci --include=optional
+
+      - name: Run platform-independent checks
+        run: |
+          npm run test:services
+          npm run test:mac-support
+
+      - name: Build unsigned Apple Silicon DMG and ZIP
+        run: npm run dist:mac
+
+      - name: Read package version
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Upload friend-test installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: Luvoelle-${{ steps.package-version.outputs.version }}-mac-arm64
+          path: |
+            outputs/release/Luvoelle-${{ steps.package-version.outputs.version }}-mac-arm64.dmg
+            outputs/release/Luvoelle-${{ steps.package-version.outputs.version }}-mac-arm64.zip
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload installers to GitHub release
+        if: ${{ inputs.release_tag != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          PACKAGE_VERSION: ${{ steps.package-version.outputs.version }}
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            "outputs/release/Luvoelle-$PACKAGE_VERSION-mac-arm64.dmg" \
+            "outputs/release/Luvoelle-$PACKAGE_VERSION-mac-arm64.zip" \
+            --clobber

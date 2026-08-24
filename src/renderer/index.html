@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+  <title>Luvoelle</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="titlebar" aria-label="窗口标题栏">
+    <div class="titlebar-drag"><span>Luvoelle</span></div>
+        <div class="window-controls">
+          <button class="window-button" data-window-action="minimize" aria-label="最小化">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10" /></svg>
+          </button>
+          <button class="window-button" data-window-action="maximize" aria-label="最大化">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="3.5" width="9" height="9" rx="1" /></svg>
+          </button>
+          <button class="window-button close" data-window-action="close" aria-label="关闭到托盘">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8m0-8-8 8" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="brand" aria-label="Luvoelle">
+          <span class="brand-mark">
+            <img src="../../assets/icon.svg" alt="" aria-hidden="true" />
+          </span>
+          <span class="brand-copy"><strong>Luvoelle</strong><small>看见，即理解</small></span>
+        </div>
+
+        <nav class="side-nav" aria-label="主导航">
+          <button class="nav-item is-active" data-view="workspace">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+            <span>工作台</span>
+          </button>
+          <button class="nav-item" data-view="text">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M9 6c0 6-2.5 10-6 12m4-5c1.5 2 3.4 3.5 5.5 4.5M14 19l3.5-9 3.5 9m-5.8-3h4.6"/></svg>
+            <span>文本翻译</span>
+          </button>
+          <button class="nav-item" data-view="history">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.5M4 4v4.5h4.5M12 7v5l3.2 2"/></svg>
+            <span>历史记录</span><span class="nav-count" id="history-count">0</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+        <nav class="side-nav side-nav-bottom">
+          <button class="nav-item" data-view="settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1-2.8 2.8-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1.1 1.7V21h-4v-.1A1.8 1.8 0 0 0 8.8 19a1.8 1.8 0 0 0-2 .4l-.1.1-2.8-2.8.1-.1a1.8 1.8 0 0 0 .4-2A1.8 1.8 0 0 0 2.7 13H2.5V9h.2a1.8 1.8 0 0 0 1.7-1.1 1.8 1.8 0 0 0-.4-2l-.1-.1L6.7 3l.1.1a1.8 1.8 0 0 0 2 .4A1.8 1.8 0 0 0 9.9 2H14v.1a1.8 1.8 0 0 0 1.1 1.7 1.8 1.8 0 0 0 2-.4l.1-.1L20 6.1l-.1.1a1.8 1.8 0 0 0-.4 2A1.8 1.8 0 0 0 21.2 9h.3v4h-.3a1.8 1.8 0 0 0-1.8 2Z"/></svg>
+            <span>设置</span>
+          </button>
+        </nav>
+
+        <div class="shortcut-card">
+          <div class="shortcut-card-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M5 8h7a2 2 0 0 1 2 2v7a4 4 0 0 1-4 4H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z"/></svg></div>
+          <div><span>随时唤起</span><strong data-shortcut-display="translate"><kbd>Alt</kbd><i>+</i><kbd>S</kbd></strong></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section class="view is-active" id="view-workspace" data-view-panel="workspace">
+          <header class="page-header workspace-header">
+            <div>
+            <p class="eyebrow">LUVOELLE WORKSPACE</p>
+              <h1>截下目光，<br><span>读懂画面。</span></h1>
+              <p class="header-copy">框选屏幕上的任何内容，本地提取文字，随后翻译。无需保存图片，也无需切换应用。</p>
+            </div>
+            <div class="privacy-pill">
+              <span class="privacy-dot"></span>
+              <div><strong id="ocr-ready-label">本地 OCR 已就绪</strong><small id="ocr-ready-note">图片默认不留存</small></div>
+            </div>
+          </header>
+
+          <div class="action-grid" aria-label="快速操作">
+            <button class="action-card action-translate" data-capture="translate">
+              <span class="action-icon">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 11V8a3 3 0 0 1 3-3h3M19 5h3a3 3 0 0 1 3 3v3m0 10v3a3 3 0 0 1-3 3h-3M13 27h-3a3 3 0 0 1-3-3v-3"/><path d="M10.5 16h11M16 10.5v11"/></svg>
+              </span>
+              <span class="action-copy"><small>一步完成</small><strong>截图翻译</strong><em>框选 · 识别 · 翻译</em></span>
+              <span class="action-meta" data-shortcut-display="translate"><kbd>Alt</kbd><i>+</i><kbd>S</kbd><span class="round-arrow">↗</span></span>
+            </button>
+            <button class="action-card action-ocr" data-capture="ocr">
+              <span class="action-icon">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 9V6h3M23 6h3v3M26 23v3h-3M9 26H6v-3M10 12h12M10 17h8M10 22h11"/></svg>
+              </span>
+              <span class="action-copy"><small>只取文字</small><strong>截图 OCR</strong><em>识别后自动复制</em></span>
+              <span class="action-meta" data-shortcut-display="ocr"><kbd>Alt</kbd><i>+</i><kbd>O</kbd><span class="round-arrow">↗</span></span>
+            </button>
+            <button class="action-card action-prompt" data-capture="prompt">
+              <span class="action-icon">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 9V6h3M23 6h3v3M26 23v3h-3M9 26H6v-3M10 21l4-10 4 10m-6-4h4M21 12h5m-2.5-2.5v5"/></svg>
+              </span>
+              <span class="action-copy"><small>视觉理解</small><strong>截图转提示词</strong><em>拆解 · 编辑 · 参考生成</em></span>
+              <span class="action-meta" data-shortcut-display="prompt"><kbd>Alt</kbd><i>+</i><kbd>P</kbd><span class="round-arrow">↗</span></span>
+            </button>
+            <button class="action-card action-edit" data-capture="edit">
+              <span class="action-icon">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 10V7h3m12 0h3v3m0 12v3h-3M10 25H7v-3"/><circle cx="16" cy="16" r="6"/><path d="M13.5 14.5h.01m5 0h.01M13.5 18c1.5 1.6 3.5 1.6 5 0"/></svg>
+              </span>
+              <span class="action-copy"><small>截图即编辑</small><strong>截图标注</strong><em id="quick-edit-action-note">Alt + A 快速 · F1 菜单保真</em></span>
+              <span class="action-meta" data-shortcut-display="edit"><kbd>Alt</kbd><i>+</i><kbd>A</kbd><span class="round-arrow">↗</span></span>
+            </button>
+          </div>
+
+          <div class="import-strip" id="drop-zone">
+            <div class="import-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.5M12 3v12m-4-4 4 4 4-4"/></svg></div>
+            <div class="import-copy"><strong>也可以拖入、粘贴或选择一张图片</strong><span>OCR 始终在本机；视觉拆解仅在你主动选择时调用模型</span></div>
+            <div class="import-actions">
+              <button class="button secondary compact" id="paste-image">粘贴图片</button>
+              <button class="button primary compact" id="choose-image">选择图片</button>
+              <button class="button ghost compact" id="choose-image-ocr">仅取文字</button>
+              <button class="button ghost compact prompt-import" id="choose-image-prompt">转提示词</button>
+            </div>
+          </div>
+
+          <section class="result-panel" id="result-panel" hidden>
+            <div class="result-toolbar">
+              <div>
+                <span class="status-dot"></span>
+                <strong id="result-title">正在理解画面</strong>
+                <small id="result-meta">准备本地 OCR</small>
+              </div>
+              <div class="result-actions">
+                <button class="icon-button" id="toggle-boxes" title="显示或隐藏识别框" aria-label="显示或隐藏识别框"><svg viewBox="0 0 24 24"><path d="M4 9V5a1 1 0 0 1 1-1h4m6 0h4a1 1 0 0 1 1 1v4m0 6v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/></svg></button>
+                <button class="button secondary compact" id="copy-all">复制全部</button>
+                <button class="icon-button" id="close-result" title="收起结果" aria-label="收起结果"><svg viewBox="0 0 24 24"><path d="m6 6 12 12m0-12L6 18"/></svg></button>
+              </div>
+            </div>
+            <div class="progress-track"><span id="progress-bar"></span></div>
+            <div class="result-grid">
+              <div class="capture-preview" id="capture-preview">
+                <img id="result-image" alt="当前截图" />
+                <div class="ocr-box-layer" id="ocr-box-layer"></div>
+                <div class="preview-placeholder"><span class="spinner"></span><p>正在读取像素中的文字…</p></div>
+              </div>
+              <div class="text-panes">
+                <article class="text-pane">
+                  <header><span>原文 · 点击文字即可修改</span><div class="pane-actions"><button class="text-copy" id="cancel-source-edit" hidden>取消</button><button class="text-copy" data-copy-target="source-text">复制</button><button class="text-copy edit-text" id="edit-source-text" hidden>保存并重译</button></div></header>
+                  <div class="text-content is-loading" id="source-text"><span class="skeleton"></span><span class="skeleton short"></span><span class="skeleton"></span></div>
+                </article>
+                <article class="text-pane translation-pane" id="translation-pane">
+                  <header><span>译文</span><button class="text-copy" data-copy-target="translation-text">复制</button></header>
+                  <div class="text-content is-loading" id="translation-text"><span class="skeleton"></span><span class="skeleton"></span><span class="skeleton short"></span></div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="recent-section" id="workspace-recent">
+            <div class="section-heading"><div><p class="eyebrow">RECENT</p><h2>刚刚看过</h2></div><button class="link-button" data-view="history">查看全部 <span>›</span></button></div>
+            <div class="recent-grid" id="recent-grid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-text" data-view-panel="text">
+          <header class="page-header compact-header">
+            <div><p class="eyebrow">TEXT TRANSLATION</p><h1>文字，换一种语言。</h1><p class="header-copy">输入文字，或直接粘贴图片识别并翻译；识别结果仍可修改。</p></div>
+          </header>
+          <div class="text-workbench">
+            <article class="editor-card">
+              <header><label for="manual-source">自动检测语言</label><div class="manual-source-actions"><button class="manual-paste-image" id="manual-paste-image" type="button"><svg viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="12" rx="2"/><path d="m8 16 3-3 2 2 2-2 2 2M9 7l1-2h4l1 2"/></svg>粘贴图片</button><span id="source-char-count">0 / 8000</span></div></header>
+              <div class="manual-image-preview" id="manual-image-preview" hidden><img id="manual-image-thumbnail" alt="已粘贴的图片" /><div><strong id="manual-image-status">正在识别图片文字…</strong><span>识别结果会填入下方，并可继续修改</span></div><button id="remove-manual-image" type="button" aria-label="移除图片">×</button></div>
+              <textarea id="manual-source" maxlength="8000" placeholder="在这里输入要翻译的内容…"></textarea>
+              <footer><button class="button ghost compact" id="clear-manual">清空</button><button class="button primary" id="translate-manual">翻译 <span>→</span></button></footer>
+            </article>
+            <div class="direction-pill" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 7-4 4 4 4M4 11h16m-4-4 4 4-4 4"/></svg></div>
+            <article class="editor-card translated">
+              <header><label class="manual-target-control">译为 <select id="manual-target"><option value="zh-CN">简体中文</option><option value="zh-TW">繁体中文</option><option value="en">English</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="es">Español</option><option value="vi">越南语</option><option value="th">泰语</option></select></label><button class="text-copy" data-copy-target="manual-result">复制</button></header>
+              <div class="manual-result" id="manual-result"><span>译文会出现在这里。</span></div>
+              <footer><small id="manual-provider">Google Translate</small></footer>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-history" data-view-panel="history">
+          <header class="page-header compact-header history-header">
+            <div><p class="eyebrow">PRIVATE HISTORY</p><h1>理解过的，都在这里。</h1><p class="header-copy">只保存文字结果；截图默认不会进入历史记录。</p></div>
+            <button class="button secondary" id="clear-history">清空历史</button>
+          </header>
+          <div class="history-toolbar">
+            <label class="search-field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg><input id="history-search" type="search" placeholder="搜索原文或译文" /></label>
+            <div class="segmented" id="history-filter"><button class="is-active" data-filter="all">全部</button><button data-filter="translate">翻译</button><button data-filter="ocr">OCR</button><button data-filter="prompt">视觉拆解</button></div>
+          </div>
+          <div class="history-list" id="history-list"></div>
+        </section>
+
+        <section class="view" id="view-settings" data-view-panel="settings">
+          <header class="page-header compact-header">
+          <div><p class="eyebrow">PREFERENCES</p><h1>把 Luvoelle 调成你的习惯。</h1><p class="header-copy">本地 OCR 负责即时结果；需要时可用视觉模型增强。翻译、视觉理解与参考生成服务都可以替换。</p></div>
+          </header>
+          <form class="settings-layout" id="settings-form">
+            <section class="settings-card">
+              <div class="settings-card-header"><span class="settings-icon blue"><svg viewBox="0 0 24 24"><path d="M4 6h16M8 12h12M4 18h16"/><circle cx="6" cy="12" r="2"/></svg></span><div><h2>翻译服务</h2><p>速度、上下文质量与自动路由</p></div></div>
+              <label class="form-row"><span><strong>服务</strong><small id="translation-provider-note">Google 适合即时短句；GPT 适合长文与复杂排版</small></span><select id="setting-provider"><option value="google">Google 极速</option><option value="deepseek">DeepSeek V4 Flash</option><option value="openai">GPT / 兼容接口</option><option value="cun">CUN.AI</option><option value="auto">自动选择</option></select></label>
+              <div class="provider-fields" id="provider-fields">
+                <label class="form-field"><span>接口地址</span><input id="setting-endpoint" type="url" placeholder="https://api.openai.com/v1" /></label>
+                <label class="form-field"><span>模型</span><input id="setting-model" type="text" list="translation-model-options" placeholder="gpt-5.4-mini" /><datalist id="translation-model-options"></datalist></label>
+                <label class="form-field"><span>API Key <em id="key-status"></em></span><input id="setting-api-key" type="password" autocomplete="off" placeholder="输入新密钥（系统加密保存）" /></label>
+                <div class="cun-model-picks" id="translation-cun-models" hidden><span>快速选择</span><button type="button" data-cun-model-target="setting-model" data-cun-model="gpt-5.6-sol">5.6 Sol</button><button type="button" data-cun-model-target="setting-model" data-cun-model="gpt-5.6-terra">5.6 Terra</button><button type="button" data-cun-model-target="setting-model" data-cun-model="gpt-5.6-luna">5.6 Luna</button><button type="button" data-cun-model-target="setting-model" data-cun-model="gpt-5.4-mini">5.4 mini</button></div>
+              </div>
+              <div class="settings-inline-note" id="deepseek-translation-help" hidden>DeepSeek 使用国内可访问的官方接口，翻译时固定关闭思考模式以降低等待和费用。请在 <code>platform.deepseek.com</code> 创建 API Key；密钥只在本机加密保存。</div>
+              <div class="provider-reuse-row"><span>已经配置视觉模型？可以安全复用其端点、模型和密钥。</span><button class="button secondary compact" type="button" id="reuse-vision-translation">复用并切换到 GPT</button></div>
+              <div class="settings-inline-note" id="translation-routing-note">自动选择：少于 60 字、1～3 行的普通短句优先 Google；达到 110 字，或达到 60 字且至少两句，或 4 行以上、列表和表格内容使用 GPT；服务失败时尝试另一条路线。</div>
+            </section>
+            <section class="settings-card">
+              <div class="settings-card-header"><span class="settings-icon purple"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM9 9h6M9 13h4"/></svg></span><div><h2>语言与行为</h2><p>设置默认目标语言和启动行为</p></div></div>
+              <label class="form-row"><span><strong>目标语言</strong><small>截图翻译和文本翻译共用</small></span><select id="setting-target"><option value="zh-CN">简体中文</option><option value="zh-TW">繁体中文</option><option value="en">English</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="es">Español</option><option value="vi">越南语</option><option value="th">泰语</option></select></label>
+            <label class="form-row"><span><strong>文字识别</strong><small id="ocr-mode-note">高精本地：离线识别，小字自动增强</small></span><select id="setting-ocr-mode"><option value="local">高精本地</option><option value="auto">自动增强</option><option value="ai">GPT 精确识别</option></select></label>
+              <label class="form-row switch-row"><span><strong>开机启动</strong><small>启动后安静驻留系统托盘</small></span><input id="setting-login" class="switch-input" type="checkbox" /><span class="switch"></span></label>
+              <label class="form-row switch-row"><span><strong>保存截图</strong><small>为保护隐私，当前版本默认关闭</small></span><input id="setting-screenshots" class="switch-input" type="checkbox" disabled /><span class="switch disabled"></span></label>
+            </section>
+            <section class="settings-card pet-settings-card">
+              <div class="settings-card-header"><span class="settings-icon pet"><img src="../../assets/pet-character-hd.png" alt="" aria-hidden="true" /></span><div><h2>萌宠翻译助手</h2><p>控制侧边萌宠的显示与吸附位置</p></div></div>
+              <label class="form-row switch-row"><span><strong>显示萌宠助手</strong><small>待命时低透明度贴边，鼠标靠近后探出</small></span><input id="setting-assistant-enabled" class="switch-input" type="checkbox" /><span class="switch"></span></label>
+              <label class="form-row"><span><strong>吸附方向</strong><small>保存后立即移动到所选屏幕边缘</small></span><select id="setting-assistant-side"><option value="right">屏幕右侧</option><option value="left">屏幕左侧</option></select></label>
+              <div class="assistant-settings-action"><span id="assistant-settings-status">萌宠正在屏幕右侧待命</span><button class="button secondary compact" type="button" id="restore-assistant">立即恢复萌宠</button></div>
+            </section>
+            <section class="settings-card vision-settings-card">
+              <div class="settings-card-header"><span class="settings-icon cyan"><svg viewBox="0 0 24 24"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></span><div><h2>视觉模型</h2><p>截图拆解与结构化提示词</p></div></div>
+              <label class="form-row"><span><strong>运行方式</strong><small id="vision-provider-note">默认连接本机 OpenAI-compatible 服务</small></span><select id="setting-vision-provider"><option value="local">本地服务</option><option value="cloud">云端兼容接口</option><option value="cun">CUN.AI</option></select></label>
+              <div class="provider-fields visible-fields">
+                <label class="form-field"><span>接口地址</span><input id="setting-vision-endpoint" type="url" placeholder="http://127.0.0.1:8080/v1" /></label>
+                <label class="form-field"><span>模型</span><input id="setting-vision-model" type="text" list="vision-model-options" placeholder="Qwen3-VL-4B-Instruct" /><datalist id="vision-model-options"></datalist></label>
+                <label class="form-field"><span>API Key <em id="vision-key-status"></em></span><input id="setting-vision-api-key" type="password" autocomplete="off" placeholder="本地服务通常无需填写" /></label>
+                <div class="cun-model-picks" id="vision-cun-models" hidden><span>快速选择</span><button type="button" data-cun-model-target="setting-vision-model" data-cun-model="gpt-5.6-sol">5.6 Sol</button><button type="button" data-cun-model-target="setting-vision-model" data-cun-model="gpt-5.6-terra">5.6 Terra</button><button type="button" data-cun-model-target="setting-vision-model" data-cun-model="gpt-5.6-luna">5.6 Luna</button><button type="button" data-cun-model-target="setting-vision-model" data-cun-model="gpt-5.4-mini">5.4 mini</button></div>
+              </div>
+              <div class="service-test-row">
+                <div class="service-status-block" id="vision-service-status-block">
+                  <strong id="vision-configured-model">尚未保存视觉模型</strong>
+                  <span id="vision-service-status">支持 llama.cpp、vLLM、LM Studio 与 Cockpit Tools</span>
+                  <details class="detected-models" id="vision-detected-models" hidden>
+                    <summary id="vision-detected-models-summary">查看服务返回的模型</summary>
+                    <p id="vision-detected-models-list"></p>
+                  </details>
+                </div>
+                <button class="button secondary compact" type="button" id="test-vision-service">检测并保存</button>
+              </div>
+              <div class="settings-inline-note" id="cun-vision-help" hidden>CUN.AI 使用官方 Base URL <code>https://www.cun.ai/v1</code>。已内置 GPT-5.6 Sol、Terra、Luna 与 GPT-5.4 mini 候选；API Key 在 CUN.AI 控制台创建，实际可用模型以“检测并保存”返回的目录为准。</div>
+              <details class="local-model-help" id="local-vision-help"><summary>本地 Qwen3-VL 启动提示</summary><code>llama-server -m &lt;model.gguf&gt; --mmproj &lt;mmproj.gguf&gt; --port 8080</code><p>Luvoelle 不捆绑数 GB 模型权重，模型和推理服务由你自行部署。</p></details>
+            </section>
+            <section class="settings-card generation-settings-card">
+              <div class="settings-card-header"><span class="settings-icon rose"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm0 10 5-5 4 4 2-2 5 5M16 8h.01"/></svg></span><div><h2>参考生成</h2><p>用于只取风格、保持构图或保持商品</p></div></div>
+              <div class="provider-fields visible-fields">
+                <label class="form-field"><span>接口地址</span><input id="setting-generation-endpoint" type="url" placeholder="https://api.openai.com/v1" /></label>
+                <label class="form-field"><span>模型</span><input id="setting-generation-model" type="text" placeholder="gpt-image-1" /></label>
+                <label class="form-field"><span>API Key <em id="generation-key-status"></em></span><input id="setting-generation-api-key" type="password" autocomplete="off" placeholder="输入新密钥（系统加密保存）" /></label>
+              </div>
+              <div class="settings-inline-note">服务需兼容 <code>POST /images/edits</code>。只有点击“生成参考图”时才会发送源图。</div>
+            </section>
+            <section class="settings-card shortcuts-settings">
+              <div class="settings-card-header"><span class="settings-icon graphite"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 10h2m2 0h2m2 0h2M7 14h10"/></svg></span><div><h2>全局快捷键</h2><p>点击右侧按键，然后按下新的快捷键</p></div><button class="shortcut-reset-all" id="reset-shortcuts" type="button">恢复默认</button></div>
+              <div class="shortcut-row" data-shortcut-row="quickEdit"><span class="shortcut-copy"><strong>菜单截图标注</strong><small>保真优先；适合右键菜单、下拉框和悬停提示</small></span><div class="shortcut-control"><em class="shortcut-status"></em><button class="shortcut-recorder" type="button" data-shortcut-input="quickEdit">F1</button></div></div>
+              <div class="shortcut-row" data-shortcut-row="translate"><span class="shortcut-copy"><strong>截图翻译</strong><small>框选后识别并翻译</small></span><div class="shortcut-control"><em class="shortcut-status"></em><button class="shortcut-recorder" type="button" data-shortcut-input="translate">Alt + S</button></div></div>
+              <div class="shortcut-row" data-shortcut-row="ocr"><span class="shortcut-copy"><strong>截图取字</strong><small>只提取文字并自动复制</small></span><div class="shortcut-control"><em class="shortcut-status"></em><button class="shortcut-recorder" type="button" data-shortcut-input="ocr">Alt + O</button></div></div>
+              <div class="shortcut-row" data-shortcut-row="prompt"><span class="shortcut-copy"><strong>截图转提示词</strong><small>进入视觉拆解</small></span><div class="shortcut-control"><em class="shortcut-status"></em><button class="shortcut-recorder" type="button" data-shortcut-input="prompt">Alt + P</button></div></div>
+              <div class="shortcut-row" data-shortcut-row="edit"><span class="shortcut-copy"><strong>快速截图标注</strong><small>速度优先；截图后原地编辑</small></span><div class="shortcut-control"><em class="shortcut-status"></em><button class="shortcut-recorder" type="button" data-shortcut-input="edit">Alt + A</button></div></div>
+              <div class="shortcut-row" data-shortcut-row="text"><span class="shortcut-copy"><strong>文本翻译</strong><small>打开文本输入窗口</small></span><div class="shortcut-control"><em class="shortcut-status"></em><button class="shortcut-recorder" type="button" data-shortcut-input="text">Alt + T</button></div></div>
+              <div class="shortcut-settings-note" id="shortcut-settings-note">单按键仅支持 F1～F24 或 PrintScreen，避免影响正常输入。</div>
+            </section>
+            <div class="settings-save" id="settings-save-bar"><span id="settings-note">所有设置已保存</span><button class="button primary" type="submit" disabled>保存全部设置</button></div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+    <div class="drop-overlay" id="drop-overlay"><div><svg viewBox="0 0 32 32"><path d="M7 20v5h18v-5M16 5v14m-6-6 6 6 6-6"/></svg><strong>松开以识别图片</strong><span>图片不会被自动保存</span></div></div>
+    <script src="app.js"></script>
+  </body>
+</html>

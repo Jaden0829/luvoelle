@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 安全漏洞私密报告
+    url: https://github.com/Jaden0829/luvoelle/security/advisories/new
+    about: 不要在公开 Issue 中披露未修复漏洞、真实密钥或用户数据

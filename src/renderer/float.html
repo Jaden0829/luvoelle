@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luvoelle 结果</title>
+    <link rel="stylesheet" href="float.css" />
+  </head>
+  <body>
+    <main class="float-shell">
+      <header class="float-header">
+      <div class="float-brand"><span class="float-mark"><img src="../../assets/icon.svg" alt="" aria-hidden="true" /></span><div><strong>Luvoelle</strong><small id="float-status">正在理解画面</small></div></div>
+        <div class="header-actions">
+          <button class="round-button" id="open-main" title="在工作台打开"><svg viewBox="0 0 24 24"><path d="M14 5h5v5m0-5-8 8M19 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"/></svg></button>
+          <button class="round-button" id="resize-float" title="适度放大" aria-label="适度放大"><svg viewBox="0 0 24 24"><path id="resize-float-icon" d="M9 4H4v5m11-5h5v5M9 20H4v-5m11 5h5v-5"/></svg></button>
+          <button class="round-button" id="pin-float" title="固定窗口"><svg viewBox="0 0 24 24"><path d="m9 4 6 0-.7 5 3.7 3v2H6v-2l3.7-3L9 4Zm3 10v6"/></svg></button>
+          <button class="round-button" id="close-float" title="关闭"><svg viewBox="0 0 24 24"><path d="m6 6 12 12m0-12L6 18"/></svg></button>
+        </div>
+      </header>
+      <div class="float-progress"><span id="float-progress-bar"></span></div>
+      <section class="float-content">
+        <div class="capture-chip"><span class="live-dot"></span><strong id="mode-label">截图翻译</strong><small id="float-meta">正在识别</small></div>
+        <article class="float-pane source-pane">
+          <header><span>原文 · 点击即可修改</span><div class="float-pane-actions"><button data-copy="float-source" data-copy-status="原文已复制">复制</button><button id="float-cancel-edit" hidden>取消</button><button class="edit-button" id="float-edit-source" hidden>保存并重译</button><button class="collapse-button" id="collapse-source" title="折叠原文" aria-label="折叠原文" aria-expanded="true"><svg viewBox="0 0 24 24"><path d="m7 14 5-5 5 5"/></svg></button></div></header>
+          <div class="float-text loading" id="float-source"><i></i><i></i><i class="short"></i></div>
+        </article>
+        <article class="float-pane translation-pane" id="float-translation-pane">
+          <header><span class="float-pane-title"><span>译文</span><small class="translation-model" id="translation-model" hidden></small></span><div class="float-pane-actions"><button id="copy-translation" data-copy="float-translation" data-copy-status="译文已复制">复制</button><button class="edit-button" id="retry-translation" hidden>重试</button><button class="collapse-button" id="collapse-translation" title="折叠译文" aria-label="折叠译文" aria-expanded="true"><svg viewBox="0 0 24 24"><path d="m7 14 5-5 5 5"/></svg></button></div></header>
+          <div class="float-text loading translated" id="float-translation"><i></i><i class="short"></i><i></i></div>
+        </article>
+      </section>
+      <footer class="float-footer">
+        <div class="clipboard-footer"><span class="clipboard-status" id="clipboard-status"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span>截图已复制</span></span><button class="copy-image-footer" id="copy-image-footer" hidden><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="m7 16 3.4-3.6 2.7 2.5 2.2-2.1L19 16M8.5 9h.01"/></svg><span>复制截图</span></button><small>图片未保存</small></div>
+        <div class="float-footer-actions"><button class="edit-image-secondary" id="edit-image" hidden><svg viewBox="0 0 24 24"><path d="M4 17.5V20h2.5L17.8 8.7l-2.5-2.5L4 17.5Zm10-10 2.5 2.5M14.8 6.7l1.7-1.7a1.4 1.4 0 0 1 2 0l.5.5a1.4 1.4 0 0 1 0 2l-1.7 1.7"/></svg><span>编辑图片</span></button></div>
+      </footer>
+    </main>
+    <div class="float-toast" id="float-toast">已复制</div>
+    <script src="float.js"></script>
+  </body>
+</html>

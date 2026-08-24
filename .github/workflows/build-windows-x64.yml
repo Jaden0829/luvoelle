@@ -1,0 +1,72 @@
+name: Build Windows x64
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Optional existing GitHub release tag to receive the installer and portable app
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --include=optional
+
+      - name: Run platform-independent checks
+        run: npm run test:services
+
+      - name: Build installer and portable app
+        run: npx electron-builder --win nsis portable --publish never
+
+      - name: Read package version
+        id: package-version
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Prepare friend-test filenames
+        shell: pwsh
+        env:
+          PACKAGE_VERSION: ${{ steps.package-version.outputs.version }}
+        run: |
+          Copy-Item -LiteralPath "outputs/release/Luvoelle Setup $env:PACKAGE_VERSION.exe" -Destination "outputs/release/Luvoelle-Setup-$env:PACKAGE_VERSION-win-x64.exe"
+          Copy-Item -LiteralPath "outputs/release/Luvoelle $env:PACKAGE_VERSION.exe" -Destination "outputs/release/Luvoelle-$env:PACKAGE_VERSION-win-x64-portable.exe"
+
+      - name: Upload friend-test installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: Luvoelle-${{ steps.package-version.outputs.version }}-win-x64
+          path: |
+            outputs/release/Luvoelle-Setup-${{ steps.package-version.outputs.version }}-win-x64.exe
+            outputs/release/Luvoelle-${{ steps.package-version.outputs.version }}-win-x64-portable.exe
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload installers to GitHub release
+        if: ${{ inputs.release_tag != '' }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          PACKAGE_VERSION: ${{ steps.package-version.outputs.version }}
+        run: |
+          gh release upload "$env:RELEASE_TAG" `
+            "outputs/release/Luvoelle-Setup-$env:PACKAGE_VERSION-win-x64.exe" `
+            "outputs/release/Luvoelle-$env:PACKAGE_VERSION-win-x64-portable.exe" `
+            --clobber

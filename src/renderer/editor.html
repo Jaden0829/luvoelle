@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luvoelle 图片编辑</title>
+    <link rel="stylesheet" href="editor.css" />
+  </head>
+  <body data-tool="rect">
+    <main class="editor-shell">
+      <header class="editor-header">
+        <div class="editor-brand"><span class="editor-mark"><img src="../../assets/icon.svg" alt="" aria-hidden="true" /></span><div><strong>编辑截图</strong><small>标注、打码、文字与 Emoji</small></div></div>
+        <div class="window-actions"><button id="minimize-editor" title="最小化"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button><button id="close-editor" title="关闭"><svg viewBox="0 0 24 24"><path d="m6 6 12 12m0-12L6 18"/></svg></button></div>
+      </header>
+
+      <section class="editor-workspace">
+        <nav class="editor-toolbar" aria-label="图片编辑工具栏">
+          <span class="toolbar-drag-handle" id="toolbar-drag-handle" title="按住拖动编辑栏" aria-label="拖动编辑栏">
+            <svg viewBox="0 0 16 24" aria-hidden="true"><circle cx="5" cy="6" r="1.35"/><circle cx="11" cy="6" r="1.35"/><circle cx="5" cy="12" r="1.35"/><circle cx="11" cy="12" r="1.35"/><circle cx="5" cy="18" r="1.35"/><circle cx="11" cy="18" r="1.35"/></svg>
+          </span>
+          <div class="tool-group">
+            <button class="tool-button is-active" data-tool="rect" title="矩形"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/></svg></button>
+            <button class="tool-button" data-tool="ellipse" title="椭圆"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="7"/></svg></button>
+            <button class="tool-button" data-tool="arrow" title="箭头"><svg viewBox="0 0 24 24"><path d="M5 19 19 5m-7 0h7v7"/></svg></button>
+            <button class="tool-button" data-tool="pen" title="画笔"><svg viewBox="0 0 24 24"><path d="m5 19 3.5-.8L19 7.7 16.3 5 5.8 15.5 5 19Zm9.8-12.5 2.7 2.7"/></svg></button>
+            <button class="tool-button" data-tool="mosaic" title="马赛克"><svg viewBox="0 0 24 24"><path d="M4 4h5v5H4zM10 4h4v5h-4zM15 4h5v5h-5zM4 10h5v4H4zM10 10h4v4h-4zM15 10h5v4h-5zM4 15h5v5H4zM10 15h4v5h-4zM15 15h5v5h-5z"/></svg></button>
+            <button class="tool-button" data-tool="text" title="文字"><svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v14M8 19h8"/></svg></button>
+            <button class="tool-button emoji-tool-button" data-tool="emoji" title="Emoji 表情" aria-label="Emoji 表情"><span class="emoji-tool-glyph">😊</span></button>
+          </div>
+          <i class="toolbar-separator"></i>
+          <div class="tool-group">
+            <button class="tool-button" id="undo-editor" title="撤销" disabled><svg viewBox="0 0 24 24"><path d="m9 7-5 5 5 5M5 12h8a6 6 0 0 1 6 6"/></svg></button>
+            <button class="tool-button" id="redo-editor" title="重做" disabled><svg viewBox="0 0 24 24"><path d="m15 7 5 5-5 5m4-5h-8a6 6 0 0 0-6 6"/></svg></button>
+          </div>
+          <i class="toolbar-separator"></i>
+          <div class="tool-group toolbar-output-actions">
+            <button class="tool-button" id="copy-editor" title="复制编辑后的图片"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V5H5v11h3"/></svg></button>
+            <button class="tool-button" id="save-editor" title="保存 PNG"><svg viewBox="0 0 24 24"><path d="M5 4h12l2 2v14H5zM8 4v6h8V4M8 20v-6h8v6"/></svg></button>
+            <button class="tool-button pin-editor-button" id="pin-editor" title="固定到桌面用于对比" aria-label="固定截图"><svg viewBox="0 0 24 24"><path d="M8 4h8l-1 5 3 3v2h-5v6l-1 1-1-1v-6H6v-2l3-3-1-5Z"/></svg></button>
+            <button class="tool-button inline-cancel-button" id="cancel-inline-editor" title="取消标注" aria-label="取消标注" hidden><svg viewBox="0 0 24 24"><path d="m6 6 12 12m0-12L6 18"/></svg></button>
+            <button class="done-button" id="done-editor" title="完成并复制（Enter）"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg><span>完成并复制</span></button>
+          </div>
+        </nav>
+
+        <div class="tool-options">
+          <div class="color-options" id="color-options" aria-label="标注颜色">
+            <button class="color-swatch is-active" data-color="#ff4d57" style="--swatch:#ff4d57" title="红色"></button>
+            <button class="color-swatch" data-color="#ffbd16" style="--swatch:#ffbd16" title="黄色"></button>
+            <button class="color-swatch" data-color="#30b86c" style="--swatch:#30b86c" title="绿色"></button>
+            <button class="color-swatch" data-color="#1685f5" style="--swatch:#1685f5" title="蓝色"></button>
+            <button class="color-swatch" data-color="#8a5cf5" style="--swatch:#8a5cf5" title="紫色"></button>
+            <button class="color-swatch" data-color="#ffffff" style="--swatch:#ffffff" title="白色"></button>
+            <button class="color-swatch" data-color="#1d1d1f" style="--swatch:#1d1d1f" title="黑色"></button>
+            <label class="custom-color-picker" id="custom-color-control" title="打开色盘选择任意颜色" aria-label="自定义色盘">
+              <span class="custom-color-preview"></span>
+              <input id="custom-color-picker" type="color" value="#ff4d57" aria-label="选择任意颜色" />
+            </label>
+          </div>
+          <i class="options-separator"></i>
+          <label class="range-option standard-option"><span>线宽</span><input id="stroke-width" type="range" min="2" max="14" value="5"><output id="stroke-width-value">5</output></label>
+          <div class="arrow-style-option" hidden><span>样式</span><div class="arrow-style-control" role="group" aria-label="箭头样式">
+            <button class="is-active" data-arrow-style="open" title="开放箭头" aria-label="开放箭头" aria-pressed="true"><svg viewBox="0 0 28 18"><path d="M3 9h20m-6-6 6 6-6 6"/></svg></button>
+            <button data-arrow-style="filled" title="实心箭头" aria-label="实心箭头" aria-pressed="false"><svg viewBox="0 0 28 18"><path d="M3 9h16"/><path class="arrow-fill" d="m17 3 8 6-8 6Z"/></svg></button>
+            <button data-arrow-style="double" title="双向箭头" aria-label="双向箭头" aria-pressed="false"><svg viewBox="0 0 28 18"><path d="M5 9h18M10 3 4 9l6 6m8-12 6 6-6 6"/></svg></button>
+            <button data-arrow-style="filled-double" title="实心双向箭头" aria-label="实心双向箭头" aria-pressed="false"><svg viewBox="0 0 28 18"><path d="M8 9h12"/><path class="arrow-fill" d="M11 3 3 9l8 6Zm6 0 8 6-8 6Z"/></svg></button>
+            <button data-arrow-style="dot" title="圆点尾箭头" aria-label="圆点尾箭头" aria-pressed="false"><svg viewBox="0 0 28 18"><circle class="arrow-fill" cx="5" cy="9" r="3"/><path d="M8 9h11"/><path class="arrow-fill" d="m17 3 8 6-8 6Z"/></svg></button>
+          </div></div>
+          <div class="mosaic-shape-option mosaic-option" hidden><span>方式</span><div class="mosaic-shape-control" role="group" aria-label="隐私遮挡方式"><button class="is-active" data-mosaic-mode="square" title="方形磨砂玻璃" aria-label="方形磨砂玻璃" aria-pressed="true"><i class="shape-square"></i></button><button data-mosaic-mode="circle" title="圆形磨砂玻璃" aria-label="圆形磨砂玻璃" aria-pressed="false"><i class="shape-circle"></i></button><button data-mosaic-mode="brush" title="像素笔刷马赛克" aria-label="像素笔刷马赛克" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 16c3-7 5 5 8-2s5 3 8-5"/></svg></button></div></div>
+          <label class="range-option mosaic-option mosaic-brush-option" hidden><span>画笔大小</span><input id="mosaic-brush" type="range" min="20" max="120" value="56"><output id="mosaic-brush-value">56</output></label>
+          <label class="range-option mosaic-option" hidden><span>模糊度</span><input id="mosaic-pixel" type="range" min="4" max="40" value="16"><output id="mosaic-pixel-value">16</output></label>
+          <div class="text-option" hidden><input id="text-content" type="text" maxlength="120" placeholder="输入文字后点击图片"><label><span>字号</span><input id="text-size" type="range" min="16" max="72" value="32"><output id="text-size-value">32</output></label></div>
+          <div class="emoji-option" hidden>
+            <span class="emoji-option-label">表情</span>
+            <div class="emoji-palette" id="emoji-palette" role="listbox" aria-label="常用 Emoji">
+              <button class="is-active" data-emoji="😊" title="微笑">😊</button><button data-emoji="😂" title="笑哭">😂</button><button data-emoji="😍" title="喜欢">😍</button><button data-emoji="🥰" title="开心">🥰</button><button data-emoji="😎" title="酷">😎</button><button data-emoji="🤔" title="思考">🤔</button><button data-emoji="😭" title="哭泣">😭</button><button data-emoji="😡" title="生气">😡</button><button data-emoji="👍" title="赞">👍</button><button data-emoji="👏" title="鼓掌">👏</button><button data-emoji="🙏" title="感谢">🙏</button><button data-emoji="❤️" title="爱心">❤️</button><button data-emoji="🔥" title="火热">🔥</button><button data-emoji="🎉" title="庆祝">🎉</button><button data-emoji="✅" title="正确">✅</button><button data-emoji="❌" title="错误">❌</button><button data-emoji="⭐" title="星标">⭐</button><button data-emoji="💡" title="灵感">💡</button><button data-emoji="📌" title="重点">📌</button><button data-emoji="⚠️" title="提醒">⚠️</button><button data-emoji="💯" title="满分">💯</button><button data-emoji="🚀" title="起飞">🚀</button><button data-emoji="🎬" title="场记">🎬</button>
+            </div>
+            <input id="emoji-custom" class="emoji-custom" type="text" maxlength="16" value="😊" aria-label="输入或粘贴其他 Emoji" title="输入或粘贴其他 Emoji" />
+            <label class="emoji-size-option"><span>大小</span><input id="emoji-size" type="range" min="24" max="180" value="72"><output id="emoji-size-value">72</output></label>
+          </div>
+        </div>
+
+        <div class="canvas-stage" id="canvas-stage">
+          <div class="canvas-frame"><canvas id="editor-canvas"></canvas></div>
+          <div class="editor-empty" id="editor-empty"><span></span><strong>正在载入截图</strong></div>
+        </div>
+        <footer class="editor-status"><span id="image-size">—</span><span id="editor-count">0 个标注</span><span id="tool-hint">拖动绘制矩形</span></footer>
+      </section>
+    </main>
+    <div class="editor-toast" id="editor-toast"></div>
+    <script src="editor.js"></script>
+  </body>
+</html>

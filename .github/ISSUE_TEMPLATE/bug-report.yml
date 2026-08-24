@@ -1,0 +1,42 @@
+name: Bug 报告
+description: 报告可复现的问题，不要上传隐私截图或真实密钥
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Luvoelle 版本
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 操作系统
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS Apple Silicon
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请使用脱敏内容，不要上传客户截图、Token 或 API Key
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+    validations:
+      required: true

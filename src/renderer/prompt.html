@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <title>Luvoelle · 视觉拆解</title>
+    <link rel="stylesheet" href="prompt.css" />
+  </head>
+  <body>
+    <div class="prompt-window">
+      <header class="titlebar">
+        <div class="titlebar-drag">
+          <span class="brand-mark" aria-hidden="true">
+            <img src="../../assets/icon.svg" alt="" />
+          </span>
+          <div><strong>Luvoelle</strong><small>视觉拆解</small></div>
+          <span class="status-pill" id="window-status"><i></i>正在准备</span>
+        </div>
+        <div class="titlebar-actions">
+          <button class="title-action" id="open-main" title="在工作台打开">工作台</button>
+          <button class="pin-window-action" id="pin-window" title="固定在桌面上" aria-label="固定在桌面上" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="m9 4 6 6m-8-4 11 11M14 3l7 7-3 1-4 4-1 3-7-7 3-1 4-4 1-3ZM5 19l4-4"/></svg><span>固定</span></button>
+          <button class="window-button" data-window-action="minimize" title="最小化" aria-label="最小化"><svg viewBox="0 0 16 16"><path d="M3 8h10"/></svg></button>
+          <button class="window-button maximize-window" id="maximize-window" title="最大化" aria-label="最大化"><svg class="maximize-icon" viewBox="0 0 16 16"><rect x="3.5" y="3.5" width="9" height="9" rx="1"/></svg><svg class="restore-icon" viewBox="0 0 16 16"><path d="M5.5 5.5V3.5h7v7h-2M3.5 5.5h7v7h-7z"/></svg></button>
+          <button class="window-button close" id="close-window" title="关闭（Esc）" aria-label="关闭"><svg viewBox="0 0 16 16"><path d="m4 4 8 8m0-8-8 8"/></svg></button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="visual-rail">
+          <section class="preview-card">
+            <div class="preview-frame" id="preview-frame">
+              <img id="source-image" alt="待分析截图" />
+              <div class="preview-empty" id="preview-empty"><svg viewBox="0 0 48 48"><rect x="6" y="8" width="36" height="32" rx="8"/><circle cx="18" cy="20" r="4"/><path d="m10 35 10-9 7 6 5-4 6 7"/></svg><strong>历史记录未保存原图</strong><span>提示词仍可查看和编辑</span></div>
+              <div class="preview-loading" id="preview-loading"><span></span><small id="progress-label">正在读取画面</small></div>
+            </div>
+            <div class="preview-meta"><span id="scene-type">视觉分析</span><small id="provider-meta">等待模型</small></div>
+          </section>
+
+          <section class="summary-card">
+            <span class="section-kicker">视觉摘要</span>
+            <p id="summary-text">Luvoelle 正在识别主体、构图、镜头和灯光关系。</p>
+          </section>
+
+          <section class="rail-note">
+            <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v6m0 4h.01"/></svg>
+            <p>镜头与参数来自视觉推测；品牌、Logo 和画面文字会单独列出，不会默认写进仿制提示词。</p>
+          </section>
+        </aside>
+
+        <section class="result-area">
+          <nav class="tabs" aria-label="结果类型">
+            <div class="tab-list">
+              <button class="is-active" data-tab="analysis">视觉拆解</button>
+              <button data-tab="prompts"><span>生图提示词</span><i class="tab-progress-dot" aria-hidden="true"></i></button>
+              <button data-tab="grid" id="grid-tab" hidden><span>电商九宫格</span><i class="tab-progress-dot" aria-hidden="true"></i></button>
+            </div>
+            <div class="mode-controls">
+              <div class="analysis-mode-switch" id="analysis-mode-switch" role="group" aria-label="视觉拆解模式">
+                <button class="is-active" type="button" data-analysis-mode="daily">日常</button>
+                <button type="button" data-analysis-mode="ecommerce">电商</button>
+                <button type="button" data-analysis-mode="drama">短剧</button>
+              </div>
+              <button class="mode-regenerate" id="regenerate-mode" type="button" title="清除当前模式的结果并重新生成" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg><span>清除重生</span></button>
+            </div>
+          </nav>
+
+          <div class="tab-panel is-active" data-tab-panel="analysis">
+            <div class="mode-transition-banner" id="mode-transition-banner" hidden><i aria-hidden="true"></i><div><strong id="mode-transition-title">正在生成新模式</strong><small id="mode-transition-message">当前结果会保留，完成后自动切换。</small></div></div>
+            <div class="analysis-grid">
+              <article class="analysis-card wide"><header><span class="card-icon product"><svg viewBox="0 0 24 24"><path d="m4 8 8-4 8 4v9l-8 4-8-4V8Zm0 0 8 4m8-4-8 4m0 9v-9"/></svg></span><div><strong id="subject-card-title">主体与场景</strong><small id="product-category">等待分析</small></div></header><p id="product-subject">—</p><div class="chip-list" id="product-chips"></div><dl><div><dt id="geometry-label">形态</dt><dd id="product-geometry">—</dd></div><div><dt id="details-label">细节</dt><dd id="product-details">—</dd></div></dl></article>
+              <article class="analysis-card wide mode-insight-card" id="mode-insight-card" hidden><header><span class="card-icon mode"><svg viewBox="0 0 24 24"><path d="M5 5h5v5H5V5Zm9 0h5v5h-5V5ZM5 14h5v5H5v-5Zm9 0h5v5h-5v-5Z"/></svg></span><div><strong id="mode-insight-title">模式洞察</strong><small id="mode-insight-subtitle">当前模式的重点信息</small></div></header><dl id="mode-insight-list"></dl></article>
+              <article class="analysis-card"><header><span class="card-icon composition"><svg viewBox="0 0 24 24"><path d="M4 9V5h4m8 0h4v4m0 6v4h-4M8 19H4v-4M8 8h8v8H8z"/></svg></span><div><strong>构图</strong><small id="aspect-ratio">—</small></div></header><dl><div><dt>景别</dt><dd id="composition-framing">—</dd></div><div><dt>视角</dt><dd id="composition-viewpoint">—</dd></div><div><dt>主体位置</dt><dd id="composition-position">—</dd></div><div><dt>留白</dt><dd id="composition-space">—</dd></div></dl></article>
+              <article class="analysis-card"><header><span class="card-icon camera"><svg viewBox="0 0 24 24"><path d="M4 8h4l2-3h4l2 3h4v11H4V8Zm8 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg></span><div><strong>镜头</strong><small>参数为推测</small></div></header><dl><div><dt>镜头类型</dt><dd id="camera-shot">—</dd></div><div><dt>焦段</dt><dd id="camera-lens">—</dd></div><div><dt>景深</dt><dd id="camera-depth">—</dd></div></dl></article>
+              <article class="analysis-card"><header><span class="card-icon light"><svg viewBox="0 0 24 24"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg></span><div><strong>灯光</strong><small id="light-temperature">—</small></div></header><dl><div><dt>光源</dt><dd id="light-source">—</dd></div><div><dt>方向</dt><dd id="light-direction">—</dd></div><div><dt>质感</dt><dd id="light-quality">—</dd></div></dl></article>
+              <article class="analysis-card"><header><span class="card-icon background"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4V5Zm0 10 5-5 4 4 2-2 5 5M16 8h.01"/></svg></span><div><strong>背景与道具</strong><small id="background-texture">—</small></div></header><p id="background-setting">—</p><div class="chip-list" id="background-props"></div></article>
+              <article class="analysis-card wide compact-card"><div><span class="section-kicker">色板</span><div class="palette" id="palette"></div></div><div><span class="section-kicker">画面文字 / 字体</span><p id="visible-text">未识别到文字</p><small id="typography">—</small></div></article>
+              <article class="analysis-card wide warning-card" id="warning-card" hidden><header><span class="card-icon warning"><svg viewBox="0 0 24 24"><path d="M12 4 3 20h18L12 4Zm0 6v4m0 3h.01"/></svg></span><div><strong>商业使用提醒</strong><small>生成前请逐项确认</small></div></header><ul id="warning-list"></ul></article>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-tab-panel="prompts">
+            <section class="prompt-waiting-state" id="prompt-waiting-state">
+              <div class="prompt-waiting-orbit" aria-hidden="true"><span></span><i></i></div>
+              <span class="section-kicker">视觉模型处理中</span>
+              <h2 id="prompt-waiting-title">生图提示词正在生成</h2>
+              <p id="prompt-waiting-message">你可以停留在这里。模型完成主体、构图、镜头与灯光分析后，提示词会自动出现。</p>
+              <div class="prompt-waiting-steps" aria-label="提示词生成进度">
+                <span class="is-complete">图片已提交</span>
+                <span class="is-active" id="prompt-vision-step">视觉拆解中</span>
+                <span id="prompt-ready-step">提示词待生成</span>
+              </div>
+              <button class="button secondary" id="prompt-waiting-back" type="button" hidden>返回视觉拆解</button>
+            </section>
+            <section class="prompt-editor-card">
+              <header class="editor-header"><div><span class="section-kicker">可编辑提示词</span><h2>选择提示词模板，再按需要微调</h2></div><div class="editor-controls"><label class="model-select"><span>提示词模板</span><select id="prompt-model"><option value="universalZh">通用中文</option><option value="universalEn">Universal English</option><option value="qwenImage">Qwen-Image</option><option value="flux">FLUX</option><option value="midjourney">Midjourney</option></select></label><button class="button copy-prompt-action" id="copy-prompt"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>复制当前提示词</span></button></div></header>
+              <textarea id="prompt-text" rows="9" spellcheck="false" placeholder="视觉分析完成后会生成可编辑提示词"></textarea>
+              <div class="editor-footer"><span id="prompt-template-note">上方只切换提示词模板，不会切换实际生图模型；复制时使用当前编辑版本。</span></div>
+            </section>
+
+            <section class="negative-card"><label for="negative-prompt"><span class="section-kicker">负面提示词</span><small id="negative-description">避免常见画面瑕疵</small></label><textarea id="negative-prompt" rows="3" spellcheck="false"></textarea><button class="text-button" id="copy-negative">复制</button></section>
+
+            <section class="generation-card">
+              <header><div><span class="section-kicker">参考生成</span><h2>决定参考图影响生成结果的程度</h2></div><span class="beta-pill" id="generator-model-badge">读取生成模型…</span></header>
+              <div class="strategy-control" id="strategy-control">
+                <button class="is-active" data-strategy="style"><strong>只取风格</strong><small>配色、材质与灯光</small></button>
+                <button data-strategy="composition"><strong>保持构图</strong><small>机位、留白与光影</small></button>
+                <button data-strategy="subject"><strong>保持主体</strong><small>保留人物或物体特征</small></button>
+              </div>
+              <label class="rights-confirm" id="rights-confirm" hidden><input type="checkbox" id="rights-checkbox"/><span><strong id="rights-title">我拥有这张图片和相关素材的使用权</strong><small id="rights-description">该模式会尝试保留输入图中的核心主体。</small></span></label>
+              <div class="generation-actions"><p id="generation-hint">将使用设置中的参考生成服务。源图不会写入历史记录。</p><button class="button primary" id="generate-image">生成参考图 <span>→</span></button></div>
+              <div class="generation-error" id="generation-error" hidden></div>
+              <div class="generation-result" id="generation-result" hidden><div class="generated-frame"><img id="generated-image" alt="参考生成结果"/><div class="generation-working" id="generation-working"><span></span><strong>正在生成新的视觉方案</strong><small id="generation-working-model">正在读取生成模型</small></div></div><div class="generated-meta"><div><strong id="generated-strategy">正在生成参考图</strong><small id="generated-provider"></small></div><div id="generated-actions" hidden><button class="button secondary" id="copy-generated">复制图片</button><button class="button primary" id="save-generated">保存图片</button></div></div></div>
+            </section>
+          </div>
+
+          <div class="tab-panel" data-tab-panel="grid">
+            <section class="grid-hero-card">
+              <div class="grid-hero-copy">
+                <span class="section-kicker">E-commerce contact sheet</span>
+                <h2>把当前主体生成一张完整九宫格</h2>
+                <p>九个格子使用不同电商机位、景别和动作，但保持同一个人物、服装与商品。最终只输出一张正方形3×3图片。</p>
+              </div>
+              <div class="mini-grid-preview" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </section>
+
+            <section class="grid-generation-card">
+              <header><div><span class="section-kicker">九宫格设置</span><h2>选择主体类型和统一视觉方向</h2></div><span class="beta-pill" id="grid-generator-model-badge">读取生成模型…</span></header>
+              <div class="grid-options">
+                <label><span>主体类型</span><select id="grid-subject-mode"><option value="auto">自动判断</option><option value="fashion">人物穿搭</option><option value="selling">人物带货</option><option value="product">纯商品</option></select></label>
+                <label><span>视觉方向</span><select id="grid-visual-style"><option value="source">保持原图视觉</option><option value="studio">白底棚拍</option><option value="premium">高级商业</option><option value="lifestyle">生活方式</option></select></label>
+              </div>
+              <label class="grid-extra"><span>补充要求 <small>选填，可直接修改</small></span><textarea id="grid-extra-prompt" rows="3" spellcheck="false" placeholder="例如：适合小红书女装详情页，肤色自然，服装颜色必须保持一致"></textarea></label>
+              <label class="rights-confirm grid-rights"><input type="checkbox" id="grid-rights-checkbox"/><span><strong>我拥有这张图片、人物肖像和商品素材的使用权</strong><small>九格会尝试锁定人物身份、服装、商品外观、标识和可见细节。</small></span></label>
+              <div class="grid-generation-actions"><div><strong>生成结果：一张完整九宫格图片</strong><small id="grid-generation-hint">使用当前设置中的图像生成模型，通常需要一到数分钟。</small></div><button class="button primary grid-generate-button" id="generate-grid"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z"/></svg><span>生成电商九宫格</span></button></div>
+              <div class="generation-error" id="grid-generation-error" hidden></div>
+              <div class="generation-result grid-result" id="grid-generation-result" hidden><div class="generated-frame grid-generated-frame"><img id="grid-generated-image" alt="电商九宫格生成结果"/><button class="image-zoom-button" id="zoom-grid-image" type="button" title="放大查看">放大查看</button><div class="generation-working" id="grid-generation-working"><span></span><strong>正在生成一张完整九宫格</strong><small id="grid-generation-working-model">正在读取生成模型</small></div></div><div class="generated-meta"><div><strong id="grid-generated-title">正在锁定主体并安排九个镜头</strong><small id="grid-generated-provider"></small></div><div id="grid-generated-actions" hidden><button class="button secondary" id="copy-grid-generated">复制图片</button><button class="button primary" id="save-grid-generated">保存图片</button></div></div></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="image-lightbox" id="image-lightbox" hidden><button class="lightbox-close" id="lightbox-close" type="button" aria-label="关闭放大查看">×</button><img id="lightbox-image" alt="放大查看生成图片"/></div>
+    <div class="toast-stack" id="toast-stack"></div>
+    <script src="prompt.js"></script>
+  </body>
+</html>

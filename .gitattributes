@@ -1,0 +1,5 @@
+/artifacts export-ignore
+/docs/provenance export-ignore
+/scripts/build-provenance-manifest.ps1 export-ignore
+/scripts/import-historical-snapshots.ps1 export-ignore
+/scripts/verify-provenance.ps1 export-ignore

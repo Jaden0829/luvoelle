@@ -1,0 +1,15 @@
+node_modules/
+outputs/
+work/
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+*.cer
+*.mobileprovision
+*.log
+.DS_Store
+.idea/
+.vscode/

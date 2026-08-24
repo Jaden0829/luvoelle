@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luvoelle 截图</title>
+    <link rel="stylesheet" href="overlay.css" />
+  </head>
+  <body class="is-standby">
+    <img id="screen-image" alt="屏幕截图" draggable="false" decoding="async" />
+    <div class="screen-dim" id="screen-dim"></div>
+    <div class="selection" id="selection" hidden>
+      <div class="selection-image" id="selection-image"></div>
+      <span class="corner top-left"></span><span class="corner top-right"></span><span class="corner bottom-left"></span><span class="corner bottom-right"></span>
+      <div class="selection-size" id="selection-size">0 × 0</div>
+    </div>
+    <div class="capture-header" id="capture-header">
+      <span class="mini-mark"><img src="../../assets/icon.svg" alt="" aria-hidden="true" /></span>
+      <strong id="capture-mode">截图翻译</strong>
+      <i></i>
+      <span id="capture-instruction">拖动框选文字区域</span>
+      <kbd>Esc</kbd><small>取消</small>
+    </div>
+    <div class="loupe" id="loupe" hidden><span></span><i></i></div>
+    <div class="processing" id="processing" hidden><span class="spinner"></span><strong>正在送往本地 OCR</strong><small>图片不会离开这台电脑</small></div>
+    <iframe class="inline-editor" id="inline-editor" src="editor.html?inline=1" title="原地编辑截图" hidden></iframe>
+    <script src="overlay.js"></script>
+  </body>
+</html>

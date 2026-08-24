@@ -1,0 +1,50 @@
+name: 商业授权申请
+description: 申请企业、OEM、SaaS、付费服务或其他商业用途授权
+title: "[Commercial License] "
+labels:
+  - commercial-license
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请不要在公开 Issue 中填写 API Key、合同、客户名单或其他商业机密。需要私密沟通时，只提供可联系渠道。
+  - type: input
+    id: organization
+    attributes:
+      label: 申请主体
+      description: 个人、公司或组织名称
+    validations:
+      required: true
+  - type: textarea
+    id: usage
+    attributes:
+      label: 使用方式
+      description: 说明产品、业务场景、是否修改源码及如何向用户提供功能
+    validations:
+      required: true
+  - type: input
+    id: scale
+    attributes:
+      label: 预计规模
+      description: 设备数、用户数、团队人数或分发量
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: 分发平台
+      description: Windows、macOS、应用商店、SaaS、OEM 等
+  - type: input
+    id: contact
+    attributes:
+      label: 联系方式
+      description: 可用于后续私密沟通的邮箱或其他渠道
+    validations:
+      required: true
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: 确认
+      options:
+        - label: 我理解提交本 Issue 不代表商业授权已经生效，必须等待双方书面确认。
+          required: true

@@ -1,0 +1,167 @@
+{
+  "name": "luvoelle",
+  "version": "0.25.8",
+  "description": "Luvoelle - screenshot OCR, translation, visual prompting and reference generation for Windows and macOS",
+  "private": true,
+  "main": "src/main.js",
+  "author": "Luvoelle",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jaden0829/luvoelle.git"
+  },
+  "homepage": "https://github.com/Jaden0829/luvoelle#readme",
+  "bugs": {
+    "url": "https://github.com/Jaden0829/luvoelle/issues"
+  },
+  "keywords": [
+    "screenshot",
+    "ocr",
+    "translation",
+    "electron",
+    "windows",
+    "macos",
+    "source-available"
+  ],
+  "scripts": {
+    "start": "electron .",
+    "build:icons": "electron scripts/build-icons.js",
+    "test:services": "node tests/services.js",
+    "test:shortcuts": "electron tests/shortcuts-electron.js",
+    "test:shortcuts-ui": "node tests/shortcuts-ui.js",
+    "test:shortcuts-packaged": "node tests/shortcuts-ui.js --packaged",
+    "test:ocr": "node tests/ocr-local.js",
+    "test:ocr-packaged": "node tests/ocr-local.js --packaged",
+    "test:ocr-isolation": "node tests/ocr-local.js --crash-isolation",
+    "test:prompt-windows": "node tests/prompt-multiwindow.js",
+    "test:native-capture": "electron tests/native-screen-capture.js",
+    "test:capture-entry": "electron tests/capture-entry-benchmark.js",
+    "test:lossless-preview": "electron tests/lossless-preview-benchmark.js",
+    "test:capture-entry-stress": "node tests/capture-entry-stress.js",
+    "test:capture-global-shortcut": "node tests/capture-global-shortcut.js",
+    "test:capture-entry-stress-packaged": "node tests/capture-entry-stress.js --packaged",
+    "test:overlay-recovery": "node tests/overlay-recovery.js",
+    "test:overlay-recovery-packaged": "node tests/overlay-recovery.js --packaged",
+    "test:capture-variants": "node tests/capture-variants.js",
+    "test:capture-variants-packaged": "node tests/capture-variants.js --packaged",
+    "test:mac-support": "node tests/mac-support.js",
+    "test:background-startup": "node tests/background-startup.js",
+    "test:background-startup-packaged": "node tests/background-startup.js --packaged",
+    "test:startup-resilience": "node tests/startup-resilience.js",
+    "test:startup-resilience-packaged": "node tests/startup-resilience.js --packaged",
+    "test:assistant-native-click": "node tests/assistant-native-click.js",
+    "test:assistant-native-click-packaged": "node tests/assistant-native-click.js --packaged",
+    "test:distribution-default": "node tests/distribution-default.js",
+    "test:deepseek-translation": "node tests/deepseek-translation.js",
+    "test:license": "node tests/licensing.js",
+    "test:smoke": "node tests/smoke.js",
+    "dist:friend:win": "electron-builder --win nsis --x64 --publish never --config.extraMetadata.luvoelleDistribution=friend",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win nsis portable",
+    "dist:mac": "electron-builder --mac dmg zip --arm64 --publish never",
+    "pack:mac": "electron-builder --mac dir --arm64"
+  },
+  "build": {
+    "appId": "com.luvoelle.desktop",
+    "productName": "Luvoelle",
+    "directories": {
+      "output": "outputs/release"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json",
+      "README.md",
+      "LICENSE",
+      "NOTICE",
+      "COMMERCIAL_LICENSE.md",
+      "TRADEMARKS.md",
+      "ASSETS_LICENSE.md",
+      "THIRD_PARTY_NOTICES.md",
+      "LICENSES/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/tesseract.js-core/**/*",
+      "node_modules/tesseract.js/**/*",
+      "node_modules/onnxruntime-node/**/*",
+      "node_modules/onnxruntime-common/**/*",
+      "node_modules/ppu-paddle-ocr/**/*",
+      "node_modules/ppu-ocv/**/*",
+      "node_modules/koffi/**/*",
+      "node_modules/@napi-rs/**/*",
+      "node_modules/@techstark/opencv-js/**/*",
+      "assets/tessdata/**/*",
+      "assets/paddleocr/native/**/*",
+      "src/ocr-native-worker.js"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "mac": {
+      "icon": "assets/icon.png",
+      "category": "public.app-category.productivity",
+      "minimumSystemVersion": "13.0",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "extendInfo": {
+        "NSHighResolutionCapable": true
+      }
+    },
+    "dmg": {
+      "title": "${productName} ${version}",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
+      "contents": [
+        {
+          "x": 140,
+          "y": 210,
+          "type": "file"
+        },
+        {
+          "x": 400,
+          "y": 210,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
+  },
+  "dependencies": {
+    "koffi": "^3.1.4",
+    "onnxruntime-node": "^1.27.0",
+    "ppu-paddle-ocr": "^6.2.0",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3",
+    "playwright": "^1.62.0"
+  },
+  "overrides": {
+    "adm-zip": "^0.6.0"
+  }
+}
