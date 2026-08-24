@@ -44,7 +44,7 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Upload friend-test installers
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Luvoelle-${{ steps.package-version.outputs.version }}-mac-arm64
           path: |
