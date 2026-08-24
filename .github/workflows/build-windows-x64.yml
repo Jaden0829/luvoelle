@@ -49,7 +49,7 @@ jobs:
           Copy-Item -LiteralPath "outputs/release/Luvoelle $env:PACKAGE_VERSION.exe" -Destination "outputs/release/Luvoelle-$env:PACKAGE_VERSION-win-x64-portable.exe"
 
       - name: Upload friend-test installers
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Luvoelle-${{ steps.package-version.outputs.version }}-win-x64
           path: |
