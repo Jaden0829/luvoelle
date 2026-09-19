@@ -152,7 +152,7 @@
   },
   "dependencies": {
     "koffi": "^3.1.4",
-    "onnxruntime-node": "^1.27.0",
+    "onnxruntime-node": "^1.30.0",
     "ppu-paddle-ocr": "^6.2.0",
     "tesseract.js": "^7.0.0"
   },
